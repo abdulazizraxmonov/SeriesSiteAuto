@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <title>{% block title %}SerialPlay.com{% endblock %}</title>
+</head>
+
+<style>
+.search-results {
+    position: absolute;
+    background-color: #1e1e1e;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+    z-index: 1000;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.search-result-item:hover,
+.search-result-item.selected {
+    background-color: #333;
+}
+
+.thumbnail img {
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.info h4 {
+    color: #fff;
+    font-size: 0.9rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+</style>
+<body>
+
+    <!-- Навбар -->
+    <nav class="navbar">
+        <div class="container">
+            <!-- Логотип с фото -->
+            <a href="{% url 'home' %}" class="navbar-brand">
+                <img src="{% static 'images/logo1.png' %}" alt="SerialPlay Logo" style="height: 40px; width: 200px;">
+            </a>
+
+            <!-- Гамбургер-меню (для мобильных устройств) -->
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- Навигация (скрыта на мобильных устройствах) -->
+            <ul class="navbar-nav">
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'schedule' %}">Расписание сериалов</a></li>
+                <li><a href="{% url 'about' %}">О сайте</a></li>
+                
+                <!-- Если пользователь не авторизован, показать "Логин" и "Регистрация" -->
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url 'register' %}">Регистрация</a></li>
+                    <li><a href="{% url 'login' %}">Логин</a></li>
+                {% else %}
+                    <!-- Если пользователь авторизован, показать его логин и кнопку выхода -->
+                    <li><span>Привет, {{ user.username }}!</span></li>
+                    <li><a href="{% url 'logout' %}">Выход</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Боковое меню (для мобильных устройств) -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                <li><a href="{% url 'schedule' %}">Расписание сериалов</a></li>
+                <li><a href="{% url 'about' %}">О сайте</a></li>
+                
+                {% if not user.is_authenticated %}
+                    <li><a href="{% url 'register' %}">Регистрация</a></li>
+                    <li><a href="{% url 'login' %}">Логин</a></li>
+                {% else %}
+                    <li><span>Привет, {{ user.username }}!</span></li>
+                    <li><a href="{% url 'logout' %}">Выход</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Форма поиска -->
+<!-- Форма поиска -->
+<form class="search-form" id="search-form">
+    <input type="text" name="q" id="search-input" placeholder="Поиск сериалов" aria-label="Search" required>
+    <button type="submit">Поиск</button>
+</form>
+
+<!-- Контейнер для AJAX-результатов -->
+<div id="search-results"></div>
+
+    <!-- Основной контент страницы -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Мой Сериал Сайт. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+
+            menuToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('active');
+            });
+        });
+    </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    let selectedIndex = -1;
+
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value.trim();
+        if (query.length > 0) {
+            fetch(`/search_series/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    searchResults.innerHTML = '';  // Очистка старых результатов
+                    selectedIndex = -1;
+
+                    if (data.results.length > 0) {
+                        data.results.forEach((result, index) => {
+                            const item = document.createElement('div');
+                            item.classList.add('search-result-item');
+                            item.dataset.id = result.id;
+                            item.innerHTML = `
+                                <div class="thumbnail">
+                                    <img src="${result.poster_url}" alt="${result.title}">
+                                </div>
+                                <div class="info">
+                                    <h4>${result.title}</h4>
+                                </div>
+                            `;
+                            item.addEventListener('click', function () {
+                                window.location.href = `/series/${result.id}/`;
+                            });
+                            searchResults.appendChild(item);
+                        });
+                    } else {
+                        searchResults.innerHTML = '<p>Ничего не найдено</p>';
+                    }
+                })
+                .catch(error => console.error('Ошибка при поиске:', error));
+        } else {
+            searchResults.innerHTML = '';  // Очистка при коротком запросе
+        }
+    });
+
+    searchInput.addEventListener('keydown', function (e) {
+        const items = searchResults.querySelectorAll('.search-result-item');
+        if (e.key === 'ArrowDown') {
+            selectedIndex = (selectedIndex + 1) % items.length;
+            updateSelection(items);
+        } else if (e.key === 'ArrowUp') {
+            selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+            updateSelection(items);
+        } else if (e.key === 'Enter' && selectedIndex >= 0) {
+            items[selectedIndex].click();
+        }
+    });
+
+    function updateSelection(items) {
+        items.forEach((item, index) => {
+            item.classList.toggle('selected', index === selectedIndex);
+        });
+    }
+});
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Сортировка: {{ sort_type }}</h1>
+
+<div class="series-grid">
+    {% for series in sorted_series %}
+    <div class="series-card">
+        <a href="{% url 'series_detail' series.pk %}">
+            <img src="{{ series.poster_url }}" alt="{{ series.title }}">
+            <div class="series-info">
+                <h3>{{ series.title }}</h3>
+                <p>Рейтинг: {{ series.rating }}</p>
+                <p>Год выпуска: {{ series.release_year }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

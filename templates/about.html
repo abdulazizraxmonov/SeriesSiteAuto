@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас</title>
+    <style>
+
+        h1 {
+            text-align: center;
+            color: #4A90E2;
+            margin-top: 20px;
+        }
+
+        p {
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+
+        /* Стили для всплывающего окна */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            padding-top: 60px; 
+        }
+
+        .modal-content {
+            background-color: #000000;
+            margin: 10% auto; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 90%; 
+            max-width: 600px; /* Максимальная ширина для настольных устройств */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        a {
+            color: #4A90E2;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        a {
+        color: #EDEDED;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #F6B7E0;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        background: rgba(255, 255, 255, 0.1);
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #EDEDED;
+        border: 1px solid #EAB8E4;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    button {
+        background: linear-gradient(135deg, #EAB8E4, #B57EB6);
+        color: #2E1A47;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #D2A5D6, #EAB8E4);
+        transform: scale(1.05);
+    }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ about_info.title }}</h1>
+    <p>{{ about_info.content }}</p>
+
+    <div style="text-align:center;">
+        <button id="showCopyrightHolders">Правобладатели</button>
+        <button id="showDeveloper">Разработчик</button>
+    </div>
+
+    <!-- Всплывающее окно для правобладателей -->
+    <div id="copyrightModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeCopyrightModal">&times;</span>
+            <h2>Правобладатели</h2>
+            <ul>
+                {% for holder in copyright_holders %}
+                    <li>{{ holder.name }} - {{ holder.contact_info }} {% if holder.website_url %}(<a href="{{ holder.website_url }}">Сайт</a>) {% endif %}</li>
+                {% endfor %}
+            </ul>
+            <h2>Наши социальные сети</h2>
+            <ul>
+                <li><a href="https://t.me/ваш_телеграм" target="_blank">Telegram</a></li>
+                <li><a href="https://instagram.com/ваш_инстаграм" target="_blank">Instagram</a></li>
+                <li><a href="https://vk.com/ваш_вк" target="_blank">VK</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Всплывающее окно для разработчика -->
+    <div id="developerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeDeveloperModal">&times;</span>
+            <h2>Информация о разработчике</h2>
+            <p>Имя: Абдулазиз</p>
+            <p>Email: rahmonovabdulaziz81@gmail.com</p>
+            <p> 
+                Создайте свой идеальный сайт с нами! 🌐
+                <br><br>
+                Вас когда-нибудь смущали громоздкие и неудобные сайты? Или, может быть, вы мечтаете о современном и стильном веб-присутствии для своего бизнеса? Мы здесь, чтобы сделать ваши мечты реальностью!
+                <br><br>
+                Почему выбирают нас?
+                <br>
+                Индивидуальный подход: Мы понимаем, что каждый бизнес уникален. Наша команда дизайнеров и разработчиков создаст сайт, который идеально подойдет вашим потребностям и выделит вас среди конкурентов.
+                <br><br>
+                Современные технологии: Используем новейшие инструменты и технологии, чтобы ваши сайты были быстрыми, безопасными и удобными для пользователей.
+                <br><br>
+                Адаптивный дизайн: Ваш сайт будет отлично выглядеть на всех устройствах, от настольных компьютеров до смартфонов.
+                <br><br>
+                SEO-оптимизация: Мы поможем вашему сайту занять высокие позиции в поисковых системах, чтобы вы могли привлечь больше клиентов.
+                <br><br>
+                Поддержка 24/7: У нас всегда есть время для вас! Мы готовы ответить на ваши вопросы и помочь в любое время.
+                <br><br>
+                Готовы начать?
+                <br><br>
+                Не упустите шанс изменить свой бизнес к лучшему! Закажите разработку сайта у нас и получите бесплатную консультацию. Дайте нам знать о своих идеях, и мы поможем вам воплотить их в жизнь.
+                <br><br>
+                Свяжитесь с нами сегодня и сделайте первый шаг к вашему успешному онлайн-присутствию!</p>
+                <li><a href="https://t.me/rahmonoff_a" target="_blank">Связаться</a></li>
+        </div>
+    </div>
+
+    <script>
+        // Открытие и закрытие всплывающего окна для правобладателей
+        var copyrightModal = document.getElementById("copyrightModal");
+        var showCopyrightBtn = document.getElementById("showCopyrightHolders");
+        var closeCopyrightSpan = document.getElementById("closeCopyrightModal");
+
+        showCopyrightBtn.onclick = function() {
+            copyrightModal.style.display = "block";
+        }
+
+        closeCopyrightSpan.onclick = function() {
+            copyrightModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == copyrightModal) {
+                copyrightModal.style.display = "none";
+            }
+        }
+
+        // Открытие и закрытие всплывающего окна для разработчика
+        var developerModal = document.getElementById("developerModal");
+        var showDeveloperBtn = document.getElementById("showDeveloper");
+        var closeDeveloperSpan = document.getElementById("closeDeveloperModal");
+
+        showDeveloperBtn.onclick = function() {
+            developerModal.style.display = "block";
+        }
+
+        closeDeveloperSpan.onclick = function() {
+            developerModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == developerModal) {
+                developerModal.style.display = "none";
+            }
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>
+

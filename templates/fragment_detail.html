@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ fragment.title }}</h1>
+    {% if fragment.video_url %}
+        <iframe class="responsive-video" 
+                src="{{ fragment.video_url }}" 
+                frameborder="0" 
+                allowfullscreen></iframe>
+    {% else %}
+        <p>No video available for this fragment.</p>
+    {% endif %}
+</div>
+{% endblock %}

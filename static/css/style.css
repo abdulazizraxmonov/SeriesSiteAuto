@@ -1,0 +1,204 @@
+        /* Общие стили */
+        body {
+            background-color: #1b1b2f;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Навбар */
+        .navbar {
+            background-color: #2d2d44;
+            padding: 15px 7;
+            position: relative;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: #ffffff;
+            font-size: 1.8em;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        /* Навигация для ПК */
+        .navbar-nav {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .navbar-nav li a {
+            color: #c0c0df;
+            text-decoration: none;
+            font-size: 1.3em;
+        }
+
+        .navbar-nav li a:hover {
+            color: #ff79c6;
+        }
+
+        /* Гамбургер-меню для мобильных устройств */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            transition: 0.3s;
+        }
+
+        /* Боковое меню для мобильных устройств */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -310px;
+            width: 250px;
+            height: 100%;
+            background-color: #2d2d44;
+            padding: 30px;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .sidebar ul li a:hover {
+            color: #ff79c6;
+        }
+
+        /* Стили для открытия бокового меню */
+        .sidebar.active {
+            left: 0;
+        }
+
+        /* Форма поиска */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+            padding: 10px;
+        }
+
+        .search-form input[type="text"] {
+            width: 60%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            background-color: #2d2d44;
+            color: #ffffff;
+            font-size: 1.2em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            outline: none;
+            transition: width 0.4s ease;
+        }
+
+        .search-form input[type="text"]:focus {
+            width: 70%;
+            background-color: #1f1f3d;
+        }
+
+        .search-form button {
+            padding: 15px 30px;
+            margin-left: 15px;
+            border: none;
+            border-radius: 25px;
+            background-color: #ff79c6;
+            color: #ffffff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .search-form button:hover {
+            background-color: #ff4f9a;
+            transform: scale(1.05);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            overflow-x: auto; /* Для горизонтальной прокрутки */
+            scroll-behavior: smooth; /* Плавная прокрутка */
+            margin-bottom: 30px; /* Разделение между секциями */
+        }
+        
+        li {
+            background-color: #2d2d44;
+            padding: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            flex: 0 0 calc(12.5% - 20px); /* 12.5% от ширины контейнера, чтобы уместилось 8 элементов */
+            margin: 10px;
+        }
+        
+        li img {
+            width: 100%; /* Ширина изображения будет соответствовать карточке */
+            height: 150px; /* Ограничение по высоте */
+            object-fit: cover; /* Масштабирование изображения без искажения */
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        
+        li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1em; /* Уменьшено для ПК */
+            font-weight: bold;
+            display: block;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .navbar-nav {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .search-form input[type="text"] {
+                width: 80%;
+            }
+
+            .search-form input[type="text"]:focus {
+                width: 85%;
+            }
+        }
+
+        /* Адаптивность для ПК */
+        @media (min-width: 769px) {
+            .sidebar {
+                display: none;
+            }
+        }

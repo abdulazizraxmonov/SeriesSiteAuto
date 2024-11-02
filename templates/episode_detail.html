@@ -1,0 +1,643 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #1b1b2f;
+      color: #EDEDED;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    /* Заголовки */
+    h1, h2, h3 {
+      color: #FF79C6;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      margin: 20px 0;
+    }
+
+    /* Основной контейнер */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Стили для ссылок */
+    a {
+      color: #BD93F9;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover, a:focus {
+      color: #FF79C6;
+    }
+
+    /* Видео и эпизоды */
+    .video-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .responsive-video {
+      aspect-ratio: 16 / 9;
+      border: none;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .video {
+      flex: 2; /* Увеличиваем размер видео */
+    }
+
+    .episode-list {
+      max-height: 400px;
+      overflow-y: auto;
+      width: 25%;
+    }
+
+    .episode-list-item {
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s; /* Плавный переход фона */
+    }
+
+    
+    .episode-list-item.selected {
+      background: rgba(0, 0, 0, 0.3); /* Цвет выделения */
+      color: #FF79C6; /* Цвет текста для выделенного элемента */
+    }
+
+    .no-video {
+      text-align: center;
+      color: #FF79C6;
+      padding: 100px;
+    }
+
+    /* Форма для комментариев */
+    textarea {
+      width: 100%;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #EDEDED;
+      border: 1px solid #FF79C6;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+
+    /* Кнопки */
+    button {
+      background: linear-gradient(135deg, #FF79C6, #BD93F9);
+      color: #2E1A47;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+
+    button:hover, button:focus {
+      background: linear-gradient(135deg, #BD93F9, #FF79C6);
+      transform: scale(1.05);
+    }
+  
+    .comments-container {
+  max-height: 300px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-item {
+  display: flex;
+  align-items: start;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.avatar {
+  margin-right: 15px;
+}
+
+.avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.comment-header strong {
+  color: #FF79C6;
+}
+
+.timestamp {
+  font-size: 0.9em;
+  color: #999;
+}
+
+.comment-form textarea {
+  width: 100%;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #EDEDED;
+  border: 1px solid #FF79C6;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.comment-form button {
+  width: 100%;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #FF79C6, #BD93F9);
+  color: #2E1A47;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.comment-form button:hover {
+  background: linear-gradient(135deg, #BD93F9, #FF79C6);
+  transform: scale(1.05);
+}
+
+
+    /* Адаптация для мобильного вида */
+    @media (max-width: 768px) {
+      .series-poster {
+        float: none;
+        margin: 5 auto 10px auto;
+        width: 100%;
+        max-width: 300px; /* Максимальная ширина для мобильных */
+      }
+
+      .series-details {
+        text-align: center;
+      }
+    }
+
+    
+
+    /* Мобильный вид */
+    @media (max-width: 768px) {
+      .video-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .video, .episode-list {
+        width: 100%;
+      }
+    }
+
+    
+  </style>
+  <style>
+    /* Основной контейнер для информации о сериале */
+    .series-details {
+      background: rgba(255, 255, 255, 0.05); /* Легкий фон для выделения */
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      color: #EDEDED;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Тень для глубины */
+    }
+
+    /* Стиль заголовков и текста для серии */
+    .series-details p {
+      font-size: 1em;
+      margin: 10px 0;
+      color: #EDEDED;
+    }
+
+    .series-details p strong {
+      color: #FF79C6; /* Цвет для выделения заголовков */
+      font-weight: bold;
+    }
+
+    /* Картинка постера сериала */
+    .series-poster {
+      float: left;
+      width: 150px;
+      height: auto;
+      margin-right: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Тень вокруг постера */
+    }
+
+    .comments-container {
+  max-height: 300px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment-item {
+  display: flex;
+  align-items: start;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.avatar {
+  margin-right: 15px;
+}
+
+.avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.comment-header strong {
+  color: #FF79C6;
+}
+
+.timestamp {
+  font-size: 0.9em;
+  color: #999;
+}
+
+.comment-form textarea {
+  width: 100%;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #EDEDED;
+  border: 1px solid #FF79C6;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.comment-form button {
+  width: 100%;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #FF79C6, #BD93F9);
+  color: #2E1A47;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.comment-form button:hover {
+  background: linear-gradient(135deg, #BD93F9, #FF79C6);
+  transform: scale(1.05);
+}
+
+   /* Include your existing styles here... */
+
+   .fragment-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .fragment-button {
+      background: linear-gradient(135deg, #FF79C6, #BD93F9);
+      color: #2E1A47;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      font-size: 1em;
+    }
+
+    .fragment-button:hover {
+      background: linear-gradient(135deg, #BD93F9, #FF79C6);
+      transform: scale(1.05);
+    }
+
+    /* Модальное окно */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      overflow: auto;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      position: relative;
+      background-color: #1b1b2f;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      color: #EDEDED;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #FF79C6;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+
+    /* Адаптация для мобильного вида */
+    @media (max-width: 768px) {
+      .series-poster {
+        float: none;
+        margin: 5 auto 10px auto;
+        width: 100%;
+        max-width: 300px; /* Максимальная ширина для мобильных */
+      }
+
+      .series-details {
+        text-align: center;
+      }
+    }
+    a {
+        color: #EDEDED;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #F6B7E0;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        background: rgba(255, 255, 255, 0.1);
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #EDEDED;
+        border: 1px solid #EAB8E4;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    button {
+        background: linear-gradient(135deg, #EAB8E4, #B57EB6);
+        color: #2E1A47;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #D2A5D6, #EAB8E4);
+        transform: scale(1.05);
+    }
+
+    /* Адаптация для мобильного вида */
+    @media (max-width: 768px) {
+      .series-poster {
+        float: none;
+        margin: 5 auto 10px auto;
+        width: 100%;
+        max-width: 300px; /* Максимальная ширина для мобильных */
+      }
+
+      .series-details {
+        text-align: center;
+      }
+    }
+</style>
+
+</head>
+
+<body>
+  <div class="series-details">
+    <h1>{{ series.title }}</h1>
+    <img src="{{ series.poster_url }}" alt="{{ series.title }}" class="series-poster">
+    <p><strong>Жанры:</strong> 
+        {% for genre in series.genres.all %}
+            {{ genre.name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <p><strong>Страна:</strong> {{ series.country.name }}</p>
+    <p><strong>Рейтинг:</strong> {{ series.rating }}</p>
+    <p><strong>Год выпуска:</strong> {{ series.release_year }}</p>
+    <p><strong>Описание:</strong> {{ series.description }}</p>
+  </div>
+
+
+     <!-- Фрагменты -->
+     <h2>Фрагменты:</h2>
+     <div class="fragment-buttons">
+       {% for fragment in episode.fragments.all %}
+         <button class="fragment-button" onclick="showFragment('{{ fragment.video_url }}')">{{ fragment.title }}</button>
+       {% empty %}
+         <p>Фрагменты отсутствуют.</p>
+       {% endfor %}
+     </div>
+ 
+     <!-- Модальное окно для фрагментов -->
+     <div id="modal" class="modal">
+       <div class="modal-content">
+         <span class="close" onclick="closeModal()">&times;</span>
+         <div id="fragment-video"></div>
+       </div>
+     </div>
+ 
+
+
+    <div class="video-container">
+      {% if episode.add_method == 'url' and episode.mover_url %}
+          <iframe class="responsive-video" 
+                  src="{{ episode.mover_url }}" 
+                  frameborder="0" 
+                  allowfullscreen></iframe>
+      {% elif episode.add_method == 'file' and episode.video_file %}
+          <video controls class="responsive-video">
+              <source src="{{ episode.video_file.url }}" type="video/mp4">
+              Ваш браузер не поддерживает просмотр видео.
+          </video>
+      {% else %}
+          <div class="no-video">Видео не доступно.</div>
+      {% endif %}
+      
+      <div class="episode-list">
+        {% for related_episode in episode.series.episode_set.all %}
+          <div class="episode-list-item {% if related_episode.id == episode.id %}selected{% endif %}">
+            <a href="{% url 'episode_detail' related_episode.pk %}">{{ related_episode.title }} - Эпизод {{ related_episode.episode_number }}</a>
+          </div>
+        {% empty %}
+          <p>Эпизоды отсутствуют.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <h2>Комментарии:</h2>
+
+    <div class="comments-container">
+      <ul class="comment-list">
+        {% for comment in comments %}
+          <li class="comment-item">
+            <div class="avatar">
+              <img src="{{ comment.author.profile_image_url|default:'/static/images/default-avatar.jpg' }}" alt="Avatar">
+            </div>
+            <div class="comment-content">
+              <div class="comment-header">
+                <strong>{{ comment.author.username }}</strong>
+                <span class="timestamp">{{ comment.created_at|date:"D d M Y H:i" }}</span>
+              </div>
+              <p>{{ comment.text }}</p>
+              {% if comment.parent %}
+                <p class="reply-to">
+                  <strong>Ответ на:</strong> {{ comment.parent.author.username }}: {{ comment.parent.text }}
+                </p>
+              {% endif %}
+            </div>
+          </li>
+        {% empty %}
+          <p>Комментарии пока отсутствуют.</p>
+        {% endfor %}
+      </ul>
+    </div>
+    
+    <form id="comment-form" action="{% url 'add_comment' episode.pk %}" method="post" class="comment-form">
+      {% csrf_token %}
+      <textarea name="text" placeholder="Введите ваш комментарий..." required></textarea>
+      <button type="submit">Отправить комментарий</button>
+    </form>
+    
+  </div>
+
+  <script>
+    // Показать модальное окно с видео фрагментом
+    function showFragment(videoUrl) {
+      const modal = document.getElementById('modal');
+      const fragmentVideo = document.getElementById('fragment-video');
+
+      if (modal && fragmentVideo) {
+        fragmentVideo.innerHTML = `
+          <iframe class="responsive-video" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>
+        `;
+        modal.style.display = 'flex';
+      } else {
+        console.error('Модальное окно или элемент видео не найдены');
+      }
+    }
+
+    // Закрыть модальное окно
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      const fragmentVideo = document.getElementById('fragment-video');
+
+      if (modal) {
+        modal.style.display = 'none';
+      }
+
+      if (fragmentVideo) {
+        fragmentVideo.innerHTML = ''; // Очистить видео
+      }
+    }
+
+    // Закрытие модального окна при клике вне области видео
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if (modal && event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Если хотите, можно добавить обработчик загрузки DOM
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ваши дополнительные настройки после загрузки DOM
+    });
+  </script>
+{% endblock %}
+
+</body>

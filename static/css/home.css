@@ -1,0 +1,88 @@
+  h1, h2 {
+    font-size: 2em;
+    color: #ff79c6;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  /* Сетка для отображения карточек сериалов */
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Автоматическая подстройка под экран */
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  /* Карточка сериала */
+  .series-card {
+    background-color: #2d2d44;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .series-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .series-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  .series-info {
+    padding: 15px;
+    color: #fff;
+  }
+
+  .series-info h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: #ff79c6;
+  }
+
+  .series-info p {
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #ccc;
+  }
+
+  /* Прокрутка для жанров и стран */
+  .scrollable {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 10px 0;
+  }
+
+  .scrollable li {
+    scroll-snap-align: start;
+    margin-right: 15px;
+  }
+
+  .scrollable a {
+    text-decoration: none;
+    font-size: 1em;
+    color: #ff79c6;
+  }
+
+  @media (max-width: 768px) {
+    h1, h2 {
+      font-size: 1.5em;
+    }
+
+    .series-card img {
+      height: 200px;
+    }
+
+    .series-info h3 {
+      font-size: 1.1em;
+    }
+  }

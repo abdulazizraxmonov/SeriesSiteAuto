@@ -1,0 +1,179 @@
+        /* Общие стили */
+        body {
+            background-color: #1b1b2f;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Навбар */
+        .navbar {
+            background-color: #2d2d44;
+            padding: 15px 0;
+            position: relative;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Чтобы элементы не выходили за пределы экрана */
+        }
+
+        .navbar-brand {
+            color: #ffffff;
+            font-size: 1.5em; /* Уменьшенный размер шрифта для логотипа */
+            text-transform: uppercase;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        /* Навигация для ПК */
+        .navbar-nav {
+            list-style: none;
+            display: flex;
+            gap: 20px; /* Уменьшенный разрыв между элементами */
+            flex-wrap: wrap; /* Элементы будут переноситься на новую строку */
+        }
+
+        .navbar-nav li a {
+            color: #c0c0df;
+            text-decoration: none;
+            font-size: 1em; /* Уменьшенный размер шрифта */
+            padding: 5px 10px;
+        }
+
+        .navbar-nav li a:hover {
+            color: #ff79c6;
+        }
+
+        /* Адаптивность для навбара */
+        @media (max-width: 1024px) {
+            .navbar-nav {
+                gap: 15px; /* Еще меньшее расстояние на узких экранах */
+            }
+            .navbar-brand {
+                font-size: 1.3em;
+            }
+        }
+        /* Гамбургер-меню для мобильных устройств */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            transition: 0.3s;
+        }
+
+        /* Боковое меню для мобильных устройств */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -310px;
+            width: 250px;
+            height: 100%;
+            background-color: #2d2d44;
+            padding: 30px;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .sidebar ul li a:hover {
+            color: #ff79c6;
+        }
+
+        /* Стили для открытия бокового меню */
+        .sidebar.active {
+            left: 0;
+        }
+
+        /* Форма поиска */
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+            padding: 10px;
+        }
+
+        .search-form input[type="text"] {
+            width: 60%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            background-color: #2d2d44;
+            color: #ffffff;
+            font-size: 1.2em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            outline: none;
+            transition: width 0.4s ease;
+        }
+
+        .search-form input[type="text"]:focus {
+            width: 70%;
+            background-color: #1f1f3d;
+        }
+
+        .search-form button {
+            padding: 15px 30px;
+            margin-left: 15px;
+            border: none;
+            border-radius: 25px;
+            background-color: #ff79c6;
+            color: #ffffff;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .search-form button:hover {
+            background-color: #ff4f9a;
+            transform: scale(1.05);
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .navbar-nav {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .search-form input[type="text"] {
+                width: 80%;
+            }
+
+            .search-form input[type="text"]:focus {
+                width: 85%;
+            }
+        }
+
+        /* Адаптивность для ПК */
+        @media (min-width: 769px) {
+            .sidebar {
+                display: none;
+            }
+        }

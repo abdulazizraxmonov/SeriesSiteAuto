@@ -1,0 +1,158 @@
+/* Заголовки */
+h1, h2, h3 {
+    color: #EAB8E4; /* Светло-фиолетовые заголовки */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Тень для заголовков */
+}
+
+/* Стили для ссылок */
+a {
+    color: #EDEDED; /* Цвет ссылок */
+    text-decoration: none; /* Убрать подчеркивание */
+    transition: color 0.3s; /* Плавная анимация изменения цвета */
+}
+
+a:hover, a:focus {
+    color: #F6B7E0; /* Цвет при наведении и фокусе */
+}
+
+/* Адаптивные заголовки */
+@media (max-width: 768px) {
+    h1 { font-size: 1.5em; }
+    h2 { font-size: 1.3em; }
+    h3 { font-size: 1.1em; }
+}
+
+/* Карусель */
+.carousel {
+    display: flex;
+    overflow-x: auto; /* Горизонтальная прокрутка */
+    padding: 10px;
+    margin: 20px 0;
+    border-radius: 8px; /* Закругленные углы */
+    flex-direction: column; /* Вертикальная прокрутка для мобильных */
+}
+
+.carousel-item {
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+    margin-right: 15px;
+    padding: 20px;
+    border-radius: 10px; /* Закругленные углы */
+    flex: 0 0 auto; /* Фиксированная ширина */
+    transition: transform 0.3s; /* Плавная анимация при наведении */
+}
+
+.carousel-item:hover {
+    transform: scale(1.05); /* Увеличение при наведении */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Тень при наведении */
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .carousel {
+        flex-direction: column; /* Вертикальная прокрутка для мобильных устройств */
+    }
+
+    .carousel-item {
+        width: 100%; /* Убрать фиксированную ширину */
+        margin-right: 0; /* Убрать отступы для мобильных */
+        margin-bottom: 15px; /* Отступ между элементами */
+        padding: 10px; /* Уменьшить отступы */
+    }
+
+    .video-container {
+        height: 250px; /* Уменьшенная высота для мобильных */
+    }
+}
+
+/* Ссылки в списках */
+ul {
+    list-style-type: none; /* Убрать маркеры списка */
+    padding: 0; /* Убрать отступы */
+}
+
+li {
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для комментариев */
+    margin: 10px 0; /* Отступы между комментариями */
+    padding: 10px;
+    border-radius: 8px; /* Закругленные углы */
+}
+
+/* Форма для комментариев */
+textarea {
+    width: 100%; /* Ширина текстовой области */
+    height: 80px; /* Меньше высоты */
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+    color: #EDEDED; /* Цвет текста */
+    border: 1px solid #EAB8E4; /* Рамка */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 10px; /* Отступы */
+    font-size: 0.9em; /* Меньше текста */
+}
+
+/* Кнопка */
+button {
+    background: linear-gradient(135deg, #EAB8E4, #B57EB6); /* Градиент для кнопки */
+    color: #2E1A47; /* Цвет текста кнопки */
+    border: none; /* Убрать рамку */
+    padding: 8px 10px; /* Уменьшенные отступы */
+    border-radius: 5px; /* Закругленные углы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background 0.3s, transform 0.3s; /* Плавная анимация */
+    font-size: 0.9em; /* Меньше текста */
+}
+
+button:hover, button:focus {
+    background: linear-gradient(135deg, #D2A5D6, #EAB8E4); /* Светлее при наведении */
+    transform: scale(1.05); /* Увеличение при наведении */
+}
+
+/* Стили для кнопки скачивания и воспроизведения */
+.download-button, .play-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #EAB8E4, #B57EB6);
+    color: #2E1A47;
+    padding: 8px 10px; /* Уменьшенные отступы */
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s;
+    font-size: 0.9em; /* Меньше текста */
+}
+
+.download-button:hover, .download-button:focus,
+.play-button:hover, .play-button:focus {
+    background: linear-gradient(135deg, #D2A5D6, #EAB8E4);
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05); /* Легкий фон */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Тень */
+    max-width: 640px; /* Максимальная ширина контейнера */
+    overflow: hidden;
+}
+
+/* Видео одинакового размера (iframe и video) */
+.responsive-video {
+    width: 100%; /* Заполнение контейнера */
+    aspect-ratio: 16 / 9; /* Пропорция как у видео 640x360 */
+    border-radius: 10px;
+    border: none;
+    object-fit: cover; /* Чтобы видео заполняло контейнер */
+}
+
+.video-container iframe,
+.video-container video {
+    width: 100%;
+    height: auto;
+}
+
+.no-video {
+    text-align: center;
+    color: #EAB8E4;
+    padding: 200px;
+}

@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<style>
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ff79c6;
+        text-shadow: 1px 1px 5px rgba(255, 121, 198, 0.5);
+    }
+    
+    .series-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .series-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .series-card {
+        background-color: #2d2d44;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+        height: 350px;
+        position: relative;
+    }
+
+    .series-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 30px rgba(255, 121, 198, 0.6);
+    }
+
+    .series-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .series-info {
+        padding: 15px;
+        color: #fff;
+        height: 100px;
+        overflow: hidden;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    }
+
+    .series-info h3 {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .series-info p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .filters {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .filters select {
+        padding: 10px;
+        border: 1px solid #ff79c6;
+        border-radius: 5px;
+        background-color: #2d2d44;
+        color: #fff;
+        flex: 1;
+        margin: 5px;
+        transition: border-color 0.3s ease;
+    }
+
+    .filters select:hover {
+        border-color: #ff4da6;
+    }
+
+    .reset-button {
+        padding: 10px 15px;
+        background-color: #ff79c6;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .reset-button:hover {
+        background-color: #ff4da6;
+        transform: scale(1.05);
+    }
+
+    h1, h2, h3 {
+        color: #EAB8E4;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .carousel {
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+        margin: 20px 0;
+        border-radius: 8px;
+    }
+
+    .carousel-item {
+        background: rgba(255, 255, 255, 0.1);
+        margin-right: 15px;
+        padding: 20px;
+        border-radius: 10px;
+        flex: 0 0 auto;
+        transition: transform 0.3s;
+    }
+
+    .carousel-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    a {
+        color: #EDEDED;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #F6B7E0;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        background: rgba(255, 255, 255, 0.1);
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #EDEDED;
+        border: 1px solid #EAB8E4;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    button {
+        background: linear-gradient(135deg, #EAB8E4, #B57EB6);
+        color: #2E1A47;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #D2A5D6, #EAB8E4);
+        transform: scale(1.05);
+    }
+</style>
+
+<h1>Ваши сериалы</h1>
+
+<div class="filters">
+    <select id="sort-year">
+        <option value="">Сортировать по году</option>
+        <option value="asc">По возрастанию</option>
+        <option value="desc">По убыванию</option>
+    </select>
+
+    <select id="sort-country">
+        <option value="">Сортировать по стране</option>
+        {% for country in countries %}
+            <option value="{{ country.id }}">{{ country.name }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="sort-genre">
+        <option value="">Сортировать по жанру</option>
+        {% for genre in genres %}
+            <option value="{{ genre.id }}">{{ genre.name }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="sort-popularity">
+        <option value="">Сортировать по популярности</option>
+        <option value="popular">По популярности</option>
+        <option value="newest">Новинки</option>
+    </select>
+
+    <button class="reset-button" id="reset-filters">Сбросить фильтры</button>
+</div>
+
+<div class="series-grid" id="series-grid">
+    {% for series in latest_series %}
+    <div class="series-card">
+        <a href="{% url 'series_detail' series.pk %}">
+            <img src="{{ series.poster_url }}" alt="{{ series.title }}">
+            <div class="series-info">
+                <h3>{{ series.title }}</h3>
+                <p>Год выпуска: {{ series.release_year }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    let page = 1; // Initial page number
+    const seriesGrid = document.getElementById('series-grid');
+
+    function loadSeries() {
+        const year = document.getElementById('sort-year').value;
+        const country = document.getElementById('sort-country').value;
+        const genre = document.getElementById('sort-genre').value;
+        const popularity = document.getElementById('sort-popularity').value;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/load-more-series/?page=${page}&year=${year}&country=${country}&genre=${genre}&popularity=${popularity}`, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                seriesGrid.innerHTML += data.series_html; // Append new content
+            }
+        };
+        xhr.send();
+    }
+
+    // Infinite scroll
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+            page++;
+            loadSeries();
+        }
+    });
+
+    // Update series on filter change
+    const filters = document.querySelectorAll('#sort-year, #sort-country, #sort-genre, #sort-popularity');
+    filters.forEach(filter => {
+        filter.addEventListener('change', function() {
+            page = 1; // Reset page number
+            seriesGrid.innerHTML = ''; // Clear current series
+            loadSeries(); // Load new series based on filters
+        });
+    });
+
+    // Reset filters
+    document.getElementById('reset-filters').addEventListener('click', function() {
+        filters.forEach(filter => {
+            filter.selectedIndex = 0; // Reset all filters
+        });
+        page = 1; // Reset page number
+        seriesGrid.innerHTML = ''; // Clear current series
+        loadSeries(); // Load series without filters
+    });
+
+    // Initial load
+    loadSeries();
+</script>
+
+{% endblock %}

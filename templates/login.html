@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <style>
+        /* Базовые стили для страницы */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1b3a; /* Темно-фиолетовый цвет фона */
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        /* Контейнер формы */
+        .form-container {
+            background-color: #2a2456; /* Глубокий темно-фиолетовый для контейнера */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%; /* Уменьшенная ширина для мобильных */
+        }
+
+        /* Заголовок */
+        h2 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        /* Стили для полей формы */
+        form p label {
+            display: block;
+            color: #d1c4e9;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        form p input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3c366b;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        /* Стили для кнопки */
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #5d52b2; /* Более яркий фиолетовый для кнопки */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        h2 {
+    text-align: center; /* Центрирование заголовка */
+    color: #ffffff; /* Цвет заголовка */
+}
+
+button {
+    width: 100%; /* Кнопка на всю ширину */
+    padding: 10px; /* Отступы внутри кнопки */
+    background-color: #007bff; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем обводку */
+    border-radius: 5px; /* Скругление углов кнопки */
+    cursor: pointer; /* Указатель курсора на кнопке */
+}
+
+button:hover {
+    background-color: #0056b3; /* Цвет кнопки при наведении */
+}
+
+.account-message {
+    text-align: center; /* Центрирование текста */
+    margin-top: 15px; /* Отступ сверху */
+    color: #ffffff; /* Цвет текста */
+}
+
+.login-link {
+    color: #007bff; /* Цвет ссылки */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+.login-link:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+        /* Анимация при наведении на кнопку */
+        button[type="submit"]:hover {
+            background-color: #7f6bcf;
+        }
+
+        /* Медиазапросы для мобильных устройств */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 20px;
+                width: 95%;
+            }
+
+            h2 {
+                font-size: 22px;
+                margin-bottom: 15px;
+            }
+
+            form p input {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            button[type="submit"] {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Вход</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Войти</button>
+        <p class="account-message">Если еще нет аккаунт, <a href="{% url 'register'%}" class="login-link">нажмите здесь</a>.</p>
+    </form>
+</div>
+
+</body>
+</html>

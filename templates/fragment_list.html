@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Fragments</h1>
+    <ul>
+        {% for fragment in fragments %}
+            <li>
+                <a href="{% url 'fragment_detail' fragment.id %}">{{ fragment.title }}</a>
+            </li>
+        {% empty %}
+            <p>No fragments available.</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

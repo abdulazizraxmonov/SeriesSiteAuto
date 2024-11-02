@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Сериалы в жанре: {{ genre.name }}</h1>
+<ul>
+  {% for series in series %}
+    <li>
+      <a href="{% url 'series_detail' series.pk %}">{{ series.title }}</a>
+    </li>
+  {% empty %}
+    <li>Нет сериалов в этом жанре.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

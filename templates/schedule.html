@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 style="text-align: center; color: #ffffff;">Расписание выхода серий</h1>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background-color: transparent; /* Прозрачный фон */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden; /* Для округления углов */
+    }
+
+    th, td {
+        padding: 15px; /* Увеличенные отступы */
+        text-align: left;
+        border-bottom: 1px solid #dddddd; /* Светлая линия разделения */
+    }
+
+    th {
+        background-color: rgba(0, 123, 255, 0.1); /* Полупрозрачный фон для заголовков */
+        color: #ffffff; /* Темный текст для заголовков */
+        text-transform: uppercase; /* Заглавные буквы для заголовков */
+        letter-spacing: 0.05em; /* Пробел между буквами */
+    }
+
+    tr:hover {
+        background-color: rgba(0, 123, 255, 0.05); /* Полупрозрачный фон для строк при наведении */
+    }
+
+    a {
+        text-decoration: none;
+        color: #007bff; /* Цвет ссылок */
+        font-weight: bold;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+    a {
+        color: #EDEDED;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #F6B7E0;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        background: rgba(255, 255, 255, 0.1);
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #EDEDED;
+        border: 1px solid #EAB8E4;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    button {
+        background: linear-gradient(135deg, #EAB8E4, #B57EB6);
+        color: #2E1A47;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #D2A5D6, #EAB8E4);
+        transform: scale(1.05);
+    }
+    /* Медиа-запросы для адаптации к мобильным устройствам */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 24px; /* Уменьшение размера заголовка */
+        }
+
+        th, td {
+            padding: 10px; /* Уменьшение отступов в ячейках */
+            font-size: 14px; /* Уменьшение размера шрифта */
+        }
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>Сериал</th>
+            <th>День выхода</th>
+            <th>Время выхода</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for schedule in schedules %}
+        <tr>
+            <td><a href="{% url 'series_detail' schedule.series.id %}">{{ schedule.series.title }}</a></td>
+            <td>{{ schedule.get_release_day_display }}</td>
+            <td>{{ schedule.release_time|date:"H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
